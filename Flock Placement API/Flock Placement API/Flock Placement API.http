@@ -1,0 +1,4 @@
+@Flock_Placement_API_HostAddress = http://localhost:5066
+
+POST {{Flock_Placement_API_HostAddress}}/api/FlockPlacement/CreatePlacement
+
