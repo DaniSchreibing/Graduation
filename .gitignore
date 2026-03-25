@@ -205,3 +205,79 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# ------------------------------
+
+# .NET / C# additions
+
+# ------------------------------
+
+# Build output
+
+bin/
+obj/
+
+# User-specific / IDE files
+
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio / Rider / VSCode
+
+.vs/
+.idea/
+.vscode/
+
+# NuGet
+
+packages/
+*.nupkg
+*.snupkg
+.nuget/
+
+# Publish output
+
+publish/
+*.publish/
+
+# Logs
+
+*.log
+
+# Test results
+
+TestResults/
+*.trx
+
+# ------------------------------
+
+# Python.NET specifics
+
+# ------------------------------
+
+# Sometimes Python runtime or dependencies get copied into .NET output folders
+
+# (especially when embedding Python)
+
+**/bin/**/Lib/
+**/bin/**/Scripts/
+**/obj/**/Lib/
+**/obj/**/Scripts/
+
+# Native interop / compiled artifacts
+
+*.pyd
+*.dll
+*.so
+
+# ------------------------------
+
+# Optional (if using Docker)
+
+# ------------------------------
+
+docker-compose.override.yml
+
