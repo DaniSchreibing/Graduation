@@ -1,0 +1,5 @@
+id, capacity, housing_type, region
+B1,     1000, CAGE        , NL
+B2,     1200, CAGE        , NL
+B3,     1500, CAGE        , DE
+B4,      800, FLOOR       , DE

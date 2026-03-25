@@ -1,0 +1,6 @@
+id, size, housing_type, target_start, target_end, region
+F1,  400, CAGE        , 2025-03-01  , 2025-03-10, NL
+F2,  350, CAGE        , 2025-03-02  , 2025-03-12, NL
+F3,  250, CAGE        , 2025-03-05  , 2025-03-15, NL
+F4,  500, CAGE        , 2025-03-08  , 2025-03-20, DE
+F5,  300, FLOOR       , 2025-03-10  , 2025-03-25, DE

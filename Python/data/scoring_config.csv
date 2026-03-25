@@ -1,0 +1,6 @@
+key               , value
+capacity_weight   ,     1
+region_penalty    ,    50
+housing_penalty   ,  1000
+region_multiplier ,     2
+housing_multiplier,    10

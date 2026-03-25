@@ -1,0 +1,6 @@
+kpi_name, scope , metric             , description
+OCC     , global, occupancy_percent  , Overall placement capacity usage %
+AGEDEV  , global, age_deviation_index, Average deviation from flock target start
+HSEBAL  , global, housing_balance    , Variance between actual and expected housing mix
+COST    , global, cost_estimate      , Total estimated cost
+DISPIM  , global, disruption_impact  , Impact of disruptions in %
