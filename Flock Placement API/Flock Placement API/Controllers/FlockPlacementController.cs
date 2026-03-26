@@ -67,7 +67,7 @@ namespace Flock_Placement_API.Controllers
 			}
 		}
 
-		//THIS IS USED/IMPLEMENTED
+		//THIS IS USED/IMPLEMENTED!
 		[EnableCors("_allowedHosts")]
 		[HttpPost("CreatePlacements/{Guid}")]
 		public IActionResult CreatePlacements(Guid Guid)
