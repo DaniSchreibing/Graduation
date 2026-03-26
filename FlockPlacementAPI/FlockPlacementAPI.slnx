@@ -1,6 +1,6 @@
 <Solution>
   <Project Path="Application/Application.csproj" />
   <Project Path="Domain/Domain.csproj" />
-  <Project Path="Flock Placement API/FlockPlacementAPI.csproj" />
+  <Project Path="FlockPlacementAPI/FlockPlacementAPI.csproj" />
   <Project Path="Tests/Tests.csproj" />
 </Solution>
