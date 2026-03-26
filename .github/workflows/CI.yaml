@@ -24,7 +24,7 @@ jobs:
             python:
               - "Python/**"
             dotnet:
-              - "Flock Placement API/**"
+              - "FlockPlacementAPI/**"
 
   python-ci:
     needs: detect-changes
