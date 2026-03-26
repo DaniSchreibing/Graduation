@@ -67,17 +67,17 @@ jobs:
           dotnet-version: "8.0.x"
 
       - name: Restore solution
-        run: dotnet restore "./Flock Placement API/Flock Placement API.sln"
+        run: dotnet restore "./Flock Placement API/Flock Placement API.slnx"
 
       - name: Run .NET tests with coverage
         run: |
-          dotnet test "./Flock Placement API/Flock Placement API.sln" \
+          dotnet test "./Flock Placement API/Flock Placement API.slnx" \
             --collect "XPlat Code Coverage" \
             --results-directory "./Flock Placement API/TestResults" \
             --configuration Release
 
       - name: Publish API
-        run: dotnet publish "./Flock Placement API/Flock Placement API.sln" -c Release -o "publish"
+        run: dotnet publish "./Flock Placement API/Flock Placement API.slnx" -c Release -o "publish"
 
       - name: Upload .NET results
         uses: actions/upload-artifact@v4
