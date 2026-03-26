@@ -7,6 +7,10 @@ on:
     branches: ["main"]
 
 jobs:
+
+  # -----------------------------------------------------
+  # Detect which project changed
+  # -----------------------------------------------------
   detect-changes:
     runs-on: ubuntu-latest
     outputs:
@@ -25,6 +29,9 @@ jobs:
             dotnet:
               - "Flock Placement API/**"
 
+  # -----------------------------------------------------
+  # Python CI Job
+  # -----------------------------------------------------
   python-ci:
     needs: detect-changes
     if: needs.detect-changes.outputs.python_changed == 'true'
@@ -39,19 +46,22 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: pip install -r Python/requirements.txt
+        run: pip install -r "Python/requirements.txt"
 
       - name: Run Python tests with coverage
         run: |
           pip install pytest pytest-cov
           pytest Python/tests --cov=Python --cov-report=xml:Python/coverage.xml
 
-      - name: Upload Python coverage + test reports
+      - name: Upload Python coverage
         uses: actions/upload-artifact@v4
         with:
-          name: python-results
+          name: python-coverage
           path: Python/coverage.xml
 
+  # -----------------------------------------------------
+  # .NET CI Job
+  # -----------------------------------------------------
   dotnet-ci:
     needs: detect-changes
     if: needs.detect-changes.outputs.dotnet_changed == 'true'
@@ -65,68 +75,14 @@ jobs:
         with:
           dotnet-version: "8.0.x"
 
-      - name: Restore
-        run: dotnet restore "Flock Placement API/Flock Placement API.sln"
+      - name: Restore solution
+        run: dotnet restore "./Flock Placement API/Flock Placement API.sln"
 
       - name: Run .NET tests with coverage
         run: |
-          dotnet test "Flock Placement API/Flock Placement API.sln" \
+          dotnet test "./Flock Placement API/Flock Placement API.sln" \
             --collect "XPlat Code Coverage" \
-            --results-directory "Flock Placement API/TestResults" \
+            --results-directory "./Flock Placement API/TestResults" \
             --configuration Release
 
-      - name: Publish .NET API
-        run: dotnet publish "Flock Placement API/Flock Placement API.sln" -c Release -o publish
-
-      - name: Upload .NET results
-        uses: actions/upload-artifact@v4
-        with:
-          name: dotnet-results
-          path: Flock Placement API/TestResults
-
-      - name: Upload publish
-        uses: actions/upload-artifact@v4
-        with:
-          name: dotnet-publish
-          path: publish/
-
-  sonar-analysis:
-    needs: [python-ci, dotnet-ci]
-    if: always()
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Download all test/coverage artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: .
-
-      - name: Run unified SonarQube scan (root config)
-        uses: SonarSource/sonarcloud-github-action@v2
-        with:
-          projectBaseDir: .
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-
-  docker-publish:
-    needs: dotnet-ci
-    if: needs.detect-changes.outputs.dotnet_changed == 'true'
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USER }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Build Docker image for .NET API
-        run: docker build -t ${{ secrets.DOCKER_USER }}/flock-placement-api:latest "Flock Placement API"
-
-      - name: Push Docker image
-        run: docker push ${{ secrets.DOCKER_USER }}/flock-placement-api:latest
+      - name: Publish API
