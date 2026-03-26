@@ -8,9 +8,6 @@ on:
 
 jobs:
 
-  # -----------------------------------------------------
-  # Detect which project changed
-  # -----------------------------------------------------
   detect-changes:
     runs-on: ubuntu-latest
     outputs:
@@ -29,9 +26,6 @@ jobs:
             dotnet:
               - "Flock Placement API/**"
 
-  # -----------------------------------------------------
-  # Python CI Job
-  # -----------------------------------------------------
   python-ci:
     needs: detect-changes
     if: needs.detect-changes.outputs.python_changed == 'true'
@@ -59,9 +53,6 @@ jobs:
           name: python-coverage
           path: Python/coverage.xml
 
-  # -----------------------------------------------------
-  # .NET CI Job
-  # -----------------------------------------------------
   dotnet-ci:
     needs: detect-changes
     if: needs.detect-changes.outputs.dotnet_changed == 'true'
@@ -86,3 +77,54 @@ jobs:
             --configuration Release
 
       - name: Publish API
+        run: dotnet publish "./Flock Placement API/Flock Placement API.sln" -c Release -o "publish"
+
+      - name: Upload .NET results
+        uses: actions/upload-artifact@v4
+        with:
+          name: dotnet-results
+          path: |
+            Flock Placement API/TestResults
+            publish/
+
+  sonar-analysis:
+    needs: [python-ci, dotnet-ci]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: .
+
+      - name: SonarQube Scan (Monorepo Root)
+        uses: SonarSource/sonarcloud-github-action@v2
+        with:
+          projectBaseDir: .
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+  docker-publish:
+    needs: dotnet-ci
+    if: needs.detect-changes.outputs.dotnet_changed == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker image for .NET API
+        run: |
+          docker build -t ${{ secrets.DOCKER_USER }}/flock-placement-api:latest \
+            "./Flock Placement API"
+
+      - name: Push Docker image
+        run: docker push ${{ secrets.DOCKER_USER }}/flock-placement-api:latest
