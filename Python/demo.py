@@ -25,3 +25,4 @@ if __name__ == "__main__":
     print("\n=== AFTER OUTAGE ===")
     for p in replanned:
         print(p)
+        print(f"  Score: {scoring.score_plan([p])}")
