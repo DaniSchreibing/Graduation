@@ -5,16 +5,16 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 # Copy solution and restore dependencies
-COPY "Flock Placement API/Flock Placement API.sln" ./
-COPY "Flock Placement API/Application/" "Application/" ./
-COPY "Flock Placement API/Domain/" "Domain/" ./
-COPY "Flock Placement API/Flock Placement API/" "FlockPlacementAPI/" ./
-COPY "Flock Placement API/Tests/" "Tests/" ./
+COPY "FlockPlacementAPI/FlockPlacementAPI.slnx" ./
+COPY "FlockPlacementAPI/Application/" "Application/" ./
+COPY "FlockPlacementAPI/Domain/" "Domain/" ./
+COPY "FlockPlacementAPI/FlockPlacementAPI/" "FlockPlacementAPI/" ./
+COPY "FlockPlacementAPI/Tests/" "Tests/" ./
 
-RUN dotnet restore "Flock Placement API.sln"
+RUN dotnet restore "FlockPlacementAPI.slnx"
 
 # Build and publish
-RUN dotnet publish "Flock Placement API.sln" -c Release -o /app/publish
+RUN dotnet publish "FlockPlacementAPI.slnx" -c Release -o /app/publish
 
 # -------------------------------------------------------
 #    STAGE 2: Runtime Image
@@ -29,4 +29,4 @@ COPY --from=build /app/publish .
 EXPOSE 8080
 
 # Start API
-ENTRYPOINT ["dotnet", "Flock Placement API.dll"]
+ENTRYPOINT ["dotnet", "FlockPlacementAPI.dll"]

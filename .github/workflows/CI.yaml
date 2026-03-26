@@ -67,24 +67,24 @@ jobs:
           dotnet-version: "8.0.x"
 
       - name: Restore solution
-        run: dotnet restore "./Flock Placement API/Flock Placement API.slnx"
+        run: dotnet restore "./FlockPlacementAPI/FlockPlacementAPI.slnx"
 
       - name: Run .NET tests with coverage
         run: |
-          dotnet test "./Flock Placement API/Flock Placement API.slnx" \
+          dotnet test "./FlockPlacementAPI/FlockPlacementAPI.slnx" \
             --collect "XPlat Code Coverage" \
-            --results-directory "./Flock Placement API/TestResults" \
+            --results-directory "./FlockPlacementAPI/TestResults" \
             --configuration Release
 
       - name: Publish API
-        run: dotnet publish "./Flock Placement API/Flock Placement API.slnx" -c Release -o "publish"
+        run: dotnet publish "./FlockPlacementAPI/FlockPlacementAPI.slnx" -c Release -o "publish"
 
       - name: Upload .NET results
         uses: actions/upload-artifact@v4
         with:
           name: dotnet-results
           path: |
-            Flock Placement API/TestResults
+            FlockPlacementAPI/TestResults
             publish/
 
   sonar-analysis:
@@ -124,7 +124,7 @@ jobs:
       - name: Build Docker image for .NET API
         run: |
           docker build -t ${{ secrets.DOCKER_USER }}/flock-placement-api:latest \
-            "./Flock Placement API"
+            "./FlockPlacementAPI"
 
       - name: Push Docker image
         run: docker push ${{ secrets.DOCKER_USER }}/flock-placement-api:latest
