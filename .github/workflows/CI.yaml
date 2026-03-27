@@ -54,38 +54,39 @@ jobs:
           path: Python/coverage.xml
 
   dotnet-ci:
-    needs: detect-changes
-    if: needs.detect-changes.outputs.dotnet_changed == 'true'
-    runs-on: ubuntu-latest
+  needs: detect-changes
+  if: needs.detect-changes.outputs.dotnet_changed == 'true'
+  runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v4
+  steps:
+    - uses: actions/checkout@v4
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: "8.0.x"
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: "8.0.x"
 
-      - name: Restore solution
-        run: dotnet restore "./FlockPlacementAPI/FlockPlacementAPI.slnx"
+    - name: Restore solution
+      run: dotnet restore "./FlockPlacementAPI/FlockPlacementAPI.slnx"
 
-      - name: Run .NET tests with coverage
-        run: |
-          dotnet test "./FlockPlacementAPI/FlockPlacementAPI.slnx" \
-            --collect "XPlat Code Coverage" \
-            --results-directory "./FlockPlacementAPI/TestResults" \
-            --configuration Release
+    - name: Run .NET tests with coverage
+      run: |
+        dotnet test "./FlockPlacementAPI/FlockPlacementAPI.slnx" \
+          --collect "XPlat Code Coverage" \
+          --results-directory "./FlockPlacementAPI/TestResults" \
+          --configuration Release
 
-      - name: Publish API
-        run: dotnet publish "./FlockPlacementAPI/FlockPlacementAPI.slnx" -c Release -o "publish"
+    - name: Publish API
+      run: dotnet publish "./FlockPlacementAPI/FlockPlacementAPI.slnx" \
+        -c Release -o "./FlockPlacementAPI/publish"
 
-      - name: Upload .NET results
-        uses: actions/upload-artifact@v4
-        with:
-          name: dotnet-results
-          path: |
-            FlockPlacementAPI/TestResults
-            publish/
+    - name: Upload .NET results
+      uses: actions/upload-artifact@v4
+      with:
+        name: dotnet-results
+        path: |
+          FlockPlacementAPI/TestResults
+          FlockPlacementAPI/publish/
 
   sonar-analysis:
     needs: [python-ci, dotnet-ci]

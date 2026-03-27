@@ -1,32 +1,30 @@
-# -------------------------------------------------------
-#    STAGE 1: Build
-# -------------------------------------------------------
+# ----------------------------------------
+#   STAGE 1 — BUILD
+# ----------------------------------------
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copy solution and restore dependencies
-COPY "FlockPlacementAPI/FlockPlacementAPI.slnx" ./
-COPY "FlockPlacementAPI/Application/" "Application/" ./
-COPY "FlockPlacementAPI/Domain/" "Domain/" ./
-COPY "FlockPlacementAPI/FlockPlacementAPI/" "FlockPlacementAPI/" ./
-COPY "FlockPlacementAPI/Tests/" "Tests/" ./
+# Copy solution
+COPY FlockPlacementAPI.slnx ./
 
+# Copy project folders
+COPY Application/ ./Application/
+COPY Domain/ ./Domain/
+COPY FlockPlacementAPI/ ./FlockPlacementAPI/
+COPY Tests/ ./Tests/
+
+# Restore
 RUN dotnet restore "FlockPlacementAPI.slnx"
 
-# Build and publish
+# Publish
 RUN dotnet publish "FlockPlacementAPI.slnx" -c Release -o /app/publish
 
-# -------------------------------------------------------
-#    STAGE 2: Runtime Image
-# -------------------------------------------------------
+# ----------------------------------------
+#   STAGE 2 — RUNTIME
+# ----------------------------------------
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
 
-# Copy published files
 COPY --from=build /app/publish .
 
-# Expose your API port (adjust if needed)
-EXPOSE 8080
-
-# Start API
 ENTRYPOINT ["dotnet", "FlockPlacementAPI.dll"]
