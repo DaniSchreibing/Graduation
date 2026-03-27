@@ -67,11 +67,11 @@ jobs:
           dotnet-version: "8.0.x"
 
       - name: Restore solution
-        run: dotnet restore "./FlockPlacementAPI/FlockPlacementAPI.slnx"
+        run: dotnet restore "./FlockPlacementAPI/FlockPlacementAPI.sln"
 
       - name: Run .NET tests with coverage
         run: |
-          dotnet test "./FlockPlacementAPI/FlockPlacementAPI.slnx" \
+          dotnet test "./FlockPlacementAPI/FlockPlacementAPI.sln" \
             --collect "XPlat Code Coverage" \
             --results-directory "./FlockPlacementAPI/TestResults" \
             --configuration Release

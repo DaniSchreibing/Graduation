@@ -5,7 +5,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 # Copy solution
-COPY FlockPlacementAPI.slnx ./
+COPY FlockPlacementAPI.sln ./
 
 # Copy project folders
 COPY Application/ ./Application/
@@ -14,7 +14,7 @@ COPY FlockPlacementAPI/ ./FlockPlacementAPI/
 COPY Tests/ ./Tests/
 
 # Restore
-RUN dotnet restore "FlockPlacementAPI.slnx"
+RUN dotnet restore "FlockPlacementAPI.sln"
 
 # Publish
 RUN dotnet publish "FlockPlacementAPI/FlockPlacementAPI.csproj" -c Release -o /app/publish
