@@ -200,7 +200,7 @@ namespace Flock_Placement_API.Controllers
 		[HttpGet("GetStatus2/{guid}")]
 		public IActionResult GetStatus2(Guid guid)
 		{
-			Console.WriteLine($"Received request to get status for GUID: {guid}..");
+			Console.WriteLine($"Received request to get status for GUID: {guid}");
 
 			if (memoryCache.TryGetValue(guid, out string? status))
 			{
