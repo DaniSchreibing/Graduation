@@ -77,7 +77,7 @@ jobs:
             --configuration Release
 
       - name: Publish API
-        run: dotnet publish "./FlockPlacementAPI/FlockPlacementAPI.slnx" \
+        run: dotnet publish "./FlockPlacementAPI/FlockPlacementAPI/FlockPlacementAPI.csproj" \
           -c Release -o "./FlockPlacementAPI/publish"
 
       - name: Upload .NET results

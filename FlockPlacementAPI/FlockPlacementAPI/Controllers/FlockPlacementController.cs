@@ -204,7 +204,7 @@ namespace Flock_Placement_API.Controllers
 
 			if (memoryCache.TryGetValue(guid, out string? status))
 			{
-				Console.WriteLine($"Status for GUID: {guid}.");
+				Console.WriteLine($"Status for GUID: {guid}..");
 				return Ok(new { GUID = guid, Status = status });
 			}
 			else

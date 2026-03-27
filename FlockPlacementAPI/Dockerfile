@@ -17,7 +17,7 @@ COPY Tests/ ./Tests/
 RUN dotnet restore "FlockPlacementAPI.slnx"
 
 # Publish
-RUN dotnet publish "FlockPlacementAPI.slnx" -c Release -o /app/publish
+RUN dotnet publish "FlockPlacementAPI/FlockPlacementAPI.csproj" -c Release -o /app/publish
 
 # ----------------------------------------
 #   STAGE 2 — RUNTIME
